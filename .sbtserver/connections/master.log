@@ -1,0 +1,25 @@
+New log file opened at Fri Jul 24 11:32:17 ICT 2015 by 6236@lenovo-PC
+Taking next connection to: 56247
+New client attempting to connect on port: 56248-56247
+  Address = /192.168.10.233:56247
+This client on port 56248 has uuid 81f6808c-cabf-40af-9f6e-9b79d80cfe10 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-81f6808c-cabf-40af-9f6e-9b79d80cfe10
+Taking next connection to: 56247
+New client attempting to connect on port: 56268-56247
+  Address = /192.168.10.233:56247
+Handshake exception on socket: 56268
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(Unknown Source)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 56247
+New client attempting to connect on port: 56269-56247
+  Address = /192.168.10.233:56247
+This client on port 56269 has uuid 661a39ad-61cc-4cb3-b4b4-8e4c9023c910 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-661a39ad-61cc-4cb3-b4b4-8e4c9023c910
+Taking next connection to: 56247

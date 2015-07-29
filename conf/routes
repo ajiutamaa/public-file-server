@@ -1,0 +1,10 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+POST        /upload/:farmerId/:meta/:id        controllers.FileServiceServer.upload(farmerId:String, meta:String, id:String)
+
+GET         /img/:farmerId/:meta/:fileName     controllers.FileServiceServer.getImage(farmerId:String, meta:String, fileName:String)
+
+GET         /storage/free                      controllers.StorageUtils.getStorageFreeSpace()
+GET         /storage/available                 controllers.FileServiceServer.checkAvailability()
+GET         /storage/url                       controllers.FileServiceServer.getStorageUrl(farmerId:Integer, meta:String)
