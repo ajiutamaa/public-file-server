@@ -3,9 +3,12 @@ package controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.inject.Inject;
+import play.libs.ws.WSClient;
 import play.libs.F;
 import play.libs.F.Promise;
 import play.libs.F.*;
+import play.libs.ws.WSResponse;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -20,6 +23,9 @@ import java.nio.file.Paths;
  * Created by lenovo on 7/27/2015.
  */
 public class FileServiceServer extends Controller{
+    @Inject
+    WSClient ws;
+
     JsonNodeFactory factory = JsonNodeFactory.instance;
 
     public Promise<Result> checkAvailability() {
@@ -50,6 +56,7 @@ public class FileServiceServer extends Controller{
                 if (fileUrl == null) {
                     return internalServerError("error storing file");
                 } else {
+                    storeUrlWsCall(fileUrl);
                     ObjectNode node = factory.objectNode();
                     node.put("public_url", fileUrl);
                     return ok(node);
@@ -59,6 +66,21 @@ public class FileServiceServer extends Controller{
             }
         } else {
             return unauthorized("invalid url");
+        }
+    }
+
+    private Boolean storeUrlWsCall(String url) {
+        if (ws.url("http://localhost:9000/upload/storeUrl")
+                .setQueryParameter("file_path", url)
+                .get().map(new Function<WSResponse, Boolean>() {
+            @Override
+            public Boolean apply(WSResponse response) throws Throwable {
+                return response.getStatus() == OK;
+            }
+        }).get(5000)){
+            return true;
+        } else {
+            return storeUrlWsCall(url);
         }
     }
 
