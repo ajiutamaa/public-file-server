@@ -37,8 +37,8 @@ public class StorageUtils extends Controller{
         });
     }
 
-    public static String generateFileUrl(int farmerId, String meta) {
-        String encodedId = SecurityUtils.encodeToString(String.valueOf(farmerId));
+    public static String generateFileUrl(String farmerId, String meta) {
+        String encodedId = SecurityUtils.encodeToString(farmerId);
         String encodedMeta = SecurityUtils.encodeToString(meta);
         String secret = SecurityUtils.createSecret(encodedId, encodedMeta);
         String identifier = SecurityUtils.encodeToString(secret);

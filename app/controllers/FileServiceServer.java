@@ -38,7 +38,7 @@ public class FileServiceServer extends Controller{
         });
     }
 
-    public Result getStorageUrl(int farmerId, String meta) {
+    public Result getStorageUrl(String farmerId, String meta) {
         ObjectNode node = factory.objectNode();
         node.put("url", StorageUtils.generateFileUrl(farmerId, meta));
         return ok(node);
@@ -56,7 +56,12 @@ public class FileServiceServer extends Controller{
                 if (fileUrl == null) {
                     return internalServerError("error storing file");
                 } else {
-                    storeUrlWsCall(fileUrl);
+//                    storeUrlWsCall(fileUrl);
+                    ws.url("http://localhost:9000/farmer/upload/storeUrl")
+                            .setQueryParameter("farmer_id", farmerId)
+                            .setQueryParameter("file_info", fileMeta)
+                            .setQueryParameter("file_path", fileUrl)
+                            .get().get(5000);
                     ObjectNode node = factory.objectNode();
                     node.put("public_url", fileUrl);
                     return ok(node);

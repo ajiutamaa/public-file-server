@@ -7,4 +7,4 @@ GET         /img/:farmerId/:meta/:fileName     controllers.FileServiceServer.get
 
 GET         /storage/free                      controllers.StorageUtils.getStorageFreeSpace()
 GET         /storage/available                 controllers.FileServiceServer.checkAvailability()
-GET         /storage/url                       controllers.FileServiceServer.getStorageUrl(farmerId:Integer, meta:String)
+GET         /storage/url                       controllers.FileServiceServer.getStorageUrl(farmerId:String, meta:String)
