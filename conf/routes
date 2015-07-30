@@ -4,6 +4,9 @@
 POST        /upload/:farmerId/:meta/:id        controllers.FileServiceServer.upload(farmerId:String, meta:String, id:String)
 
 GET         /img/:farmerId/:meta/:fileName     controllers.FileServiceServer.getImage(farmerId:String, meta:String, fileName:String)
+# GET         /delete/:farmerId/:meta/:fileName  controllers.FileServiceServer.deleteImage(farmerId:String, meta:String, fileName:String)
+
+GET         /delete/farmer/:farmerId           controllers.FileServiceServer.deleteFarmer(farmerId:String)
 
 GET         /storage/free                      controllers.StorageUtils.getStorageFreeSpace()
 GET         /storage/available                 controllers.FileServiceServer.checkAvailability()

@@ -60,6 +60,25 @@ public class StorageUtils extends Controller{
         }
     }
 
+    public static boolean deleteFarmerDirectory (String farmerId) {
+        try {
+            FileUtils.deleteDirectory(new File("public/"+SecurityUtils.encodeToString(farmerId)));
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public static F.Promise<Boolean> deleteFarmerFile (final File file) {
+        return F.Promise.promise(new F.Function0<Boolean>() {
+            @Override
+            public Boolean apply() throws Throwable {
+                FileUtils.deleteQuietly(file);
+                return true;
+            }
+        });
+    }
+
     public static F.Promise<byte[]> getFileBytes(final File file) {
         return F.Promise.promise(new F.Function0<byte[]>() {
             @Override

@@ -23,6 +23,8 @@ import java.nio.file.Paths;
  * Created by lenovo on 7/27/2015.
  */
 public class FileServiceServer extends Controller{
+    static final String STORAGE_ENDPOINT = "http://192.168.10.188:9009/img";
+
     @Inject
     WSClient ws;
 
@@ -56,14 +58,13 @@ public class FileServiceServer extends Controller{
                 if (fileUrl == null) {
                     return internalServerError("error storing file");
                 } else {
-//                    storeUrlWsCall(fileUrl);
                     ws.url("http://localhost:9000/farmer/upload/storeUrl")
-                            .setQueryParameter("farmer_id", farmerId)
-                            .setQueryParameter("file_info", fileMeta)
-                            .setQueryParameter("file_path", fileUrl)
+                            .setQueryParameter("farmer_id", SecurityUtils.decodeToString(farmerId))
+                            .setQueryParameter("file_info", SecurityUtils.decodeToString(fileMeta))
+                            .setQueryParameter("file_path", STORAGE_ENDPOINT + fileUrl)
                             .get().get(5000);
                     ObjectNode node = factory.objectNode();
-                    node.put("public_url", fileUrl);
+                    node.put("public_url", STORAGE_ENDPOINT+fileUrl);
                     return ok(node);
                 }
             } catch (Exception e) {
@@ -74,18 +75,11 @@ public class FileServiceServer extends Controller{
         }
     }
 
-    private Boolean storeUrlWsCall(String url) {
-        if (ws.url("http://localhost:9000/upload/storeUrl")
-                .setQueryParameter("file_path", url)
-                .get().map(new Function<WSResponse, Boolean>() {
-            @Override
-            public Boolean apply(WSResponse response) throws Throwable {
-                return response.getStatus() == OK;
-            }
-        }).get(5000)){
-            return true;
+    public Result deleteFarmer (String farmerId) {
+        if (StorageUtils.deleteFarmerDirectory(farmerId)) {
+            return ok("farmer directory deleted");
         } else {
-            return storeUrlWsCall(url);
+            return internalServerError("internal error occured");
         }
     }
 
@@ -94,6 +88,12 @@ public class FileServiceServer extends Controller{
             String filePath = "public/"+farmerId+"/"+fileMeta+"/"+fileName;
             Path path = Paths.get(filePath);
             File file = path.toFile();
+            if (!file.exists()) return Promise.promise(new Function0<Result>() {
+                @Override
+                public Result apply() throws Throwable {
+                    return internalServerError("file does not exist");
+                }
+            });
             response().setContentType(Files.probeContentType(path));
             return StorageUtils.getFileBytes(file).map(new F.Function<byte[], Result>() {
                 @Override
@@ -101,7 +101,29 @@ public class FileServiceServer extends Controller{
                     return ok(bytes);
                 }
             });
-        } catch (IOException e) {
+        } catch (Exception e) {
+            return Promise.promise(new Function0<Result>() {
+                @Override
+                public Result apply() throws Throwable {
+                    return internalServerError("internal error");
+                }
+            });
+        }
+    }
+
+    public Promise<Result> deleteImage(String farmerId, String fileMeta, String fileName) {
+        try {
+            String filePath = "public/"+farmerId+"/"+fileMeta+"/"+fileName;
+            Path path = Paths.get(filePath);
+            File file = path.toFile();
+            return StorageUtils.deleteFarmerFile(file)
+                    .map(new Function<Boolean, Result>() {
+                        @Override
+                        public Result apply(Boolean status) throws Throwable {
+                            return status? ok("deleted") : internalServerError("internal error");
+                        }
+                    });
+        } catch (Exception e) {
             return Promise.promise(new Function0<Result>() {
                 @Override
                 public Result apply() throws Throwable {

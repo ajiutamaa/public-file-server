@@ -22,6 +22,14 @@ public class SecurityUtils {
         return encoded;
     }
 
+    public static String decodeToString(String encoded) {
+        String temp = new String(dec.decode(encoded));
+        temp = temp.replace("z","");
+        temp = new String(dec.decode(temp));
+        temp = temp.replace("z", "");
+        return temp;
+    }
+
     public static String createSecret(String farmerId, String fileMeta) {
         return (farmerId+fileMeta).toLowerCase().replaceAll("[aiueo]","").substring(0,10);
     }
