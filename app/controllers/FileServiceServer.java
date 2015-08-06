@@ -30,6 +30,15 @@ public class FileServiceServer extends Controller{
 
     JsonNodeFactory factory = JsonNodeFactory.instance;
 
+    // allow CORS
+    public Result preflight(String all) {
+        response().setHeader("Access-Control-Allow-Origin", "*");
+        response().setHeader("Allow", "*");
+        response().setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+        response().setHeader("Access-Control-Allow-Headers", "Origin, X-AUTH-TOKEN, X-Requested-With, Content-Type, Accept, Referer, User-Agent");
+        return ok();
+    }
+
     public Promise<Result> checkAvailability() {
         return StorageUtils.isStorageAvailable().map(new Function<Boolean, Result>() {
             @Override
