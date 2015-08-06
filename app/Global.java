@@ -1,6 +1,3 @@
-import com.mongodb.MongoClient;
-import org.apache.commons.io.IOUtils;
-import org.jongo.Jongo;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
@@ -8,9 +5,6 @@ import play.libs.F;
 import play.mvc.Action;
 import play.mvc.Http;
 import play.mvc.Result;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 import java.net.URL;
