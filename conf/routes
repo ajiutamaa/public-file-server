@@ -1,6 +1,10 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
+
+# CORS
+OPTIONS     /*all                              controllers.FileServiceServer.preflight(all:String)
+
 POST        /upload/:farmerId/:meta/:id        controllers.FileServiceServer.upload(farmerId:String, meta:String, id:String)
 
 GET         /img/:farmerId/:meta/:fileName     controllers.FileServiceServer.getImage(farmerId:String, meta:String, fileName:String)
