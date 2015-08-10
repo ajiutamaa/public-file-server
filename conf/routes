@@ -3,15 +3,16 @@
 # ~~~~
 
 # CORS
-OPTIONS     /*all                              controllers.FileServiceServer.preflight(all:String)
+OPTIONS     /*all                              		  controllers.FileServiceServer.preflight(all:String)
 
-POST        /upload/:farmerId/:meta/:id        controllers.FileServiceServer.upload(farmerId:String, meta:String, id:String)
+POST        /upload/:farmerId/:meta/:id        		  controllers.FileServiceServer.upload(farmerId:String, meta:String, id:String)
 
-GET         /img/:farmerId/:meta/:fileName     controllers.FileServiceServer.getImage(farmerId:String, meta:String, fileName:String)
+GET         /img/:farmerId/:meta/:fileName	          controllers.FileServiceServer.getImage(farmerId:String, meta:String, fileName:String)
+GET         /img/:farmerId/:meta/:fileName/:timeStamp     controllers.FileServiceServer.getImageAlt(farmerId:String, meta:String, fileName:String, timeStamp:Long)
 # GET         /delete/:farmerId/:meta/:fileName  controllers.FileServiceServer.deleteImage(farmerId:String, meta:String, fileName:String)
 
-GET         /delete/farmer/:farmerId           controllers.FileServiceServer.deleteFarmer(farmerId:String)
+GET         /delete/farmer/:farmerId           		  controllers.FileServiceServer.deleteFarmer(farmerId:String)
 
-GET         /storage/free                      controllers.StorageUtils.getStorageFreeSpace()
-GET         /storage/available                 controllers.FileServiceServer.checkAvailability()
-GET         /storage/url                       controllers.FileServiceServer.getStorageUrl(farmerId:String, meta:String)
+GET         /storage/free                      		  controllers.StorageUtils.getStorageFreeSpace()
+GET         /storage/available                 		  controllers.FileServiceServer.checkAvailability()
+GET         /storage/url                       		  controllers.FileServiceServer.getStorageUrl(farmerId:String, meta:String)

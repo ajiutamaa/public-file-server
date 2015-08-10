@@ -120,6 +120,35 @@ public class FileServiceServer extends Controller{
         }
     }
 
+    public Promise<Result> getImageAlt(String farmerId, String fileMeta, String fileName, Long timeStamp) {
+        try {
+            String filePath = "public/"+farmerId+"/"+fileMeta+"/"+fileName;
+            Path path = Paths.get(filePath);
+            File file = path.toFile();
+            if (!file.exists()) return Promise.promise(new Function0<Result>() {
+                @Override
+                public Result apply() throws Throwable {
+                    return internalServerError("file does not exist");
+                }
+            });
+            response().setContentType(Files.probeContentType(path));
+            return StorageUtils.getFileBytes(file).map(new F.Function<byte[], Result>() {
+                @Override
+                public Result apply(byte[] bytes) throws Throwable {
+                    return ok(bytes);
+                }
+            });
+        } catch (Exception e) {
+            return Promise.promise(new Function0<Result>() {
+                @Override
+                public Result apply() throws Throwable {
+                    return internalServerError("internal error");
+                }
+            });
+        }
+    }
+
+
     public Promise<Result> deleteImage(String farmerId, String fileMeta, String fileName) {
         try {
             String filePath = "public/"+farmerId+"/"+fileMeta+"/"+fileName;
