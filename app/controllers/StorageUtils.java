@@ -52,7 +52,8 @@ public class StorageUtils extends Controller{
             int startExt = name.lastIndexOf(".");
             String extension = name.substring(startExt, name.length());
             File newFile = new File("public" + path, randFileName+extension);
-            FileUtils.deleteQuietly(newFile);
+            String dirName = "public" + path;
+            FileUtils.deleteDirectory(new File(dirName));
             FileUtils.moveFile(image, newFile);
             return path+"/"+randFileName+extension;
         } catch (IOException ioex){
