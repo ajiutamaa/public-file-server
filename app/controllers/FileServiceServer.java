@@ -12,7 +12,7 @@ import play.libs.ws.WSResponse;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-
+import play.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
