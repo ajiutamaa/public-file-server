@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -48,7 +49,10 @@ public class StorageUtils extends Controller{
 
     public static String storeFile (String path, File image, String name) {
         try {
-            String randFileName = SecurityUtils.encodeToString(path).substring(path.length()-5,path.length());
+            String timestamp = new Date().toString();
+            String randFileName = SecurityUtils.encodeToString(path)
+                    .substring(path.length()-5,path.length()) +
+                    timestamp;
             int startExt = name.lastIndexOf(".");
             String extension = name.substring(startExt, name.length());
             File newFile = new File("public" + path, randFileName+extension);
